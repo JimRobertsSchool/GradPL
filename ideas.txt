@@ -1,0 +1,28 @@
+how to deal with call and the stack
+
+add code data for static int
+	after .data if present
+	otherwise after .file
+		add .data
+
+	.align 4
+	.type	__jims_var, @object
+	.size	__jims_var, 4
+__jims_var:
+	.long	4
+
+	replace instance of long code with
+		call temp
+
+	in temp
+		move last thing on stack to __jims_var
+			hopefully not through a register
+
+		movl	4(%esp), __jims_var
+		decriment stack pointer behind return address
+		addl	$4, %esp
+		then continue
+
+	limitations
+		can't call a temp function inside of annother temp function
+			solution, only do the prefix tree for section of code not in temporary

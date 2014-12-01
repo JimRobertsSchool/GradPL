@@ -1,0 +1,31 @@
+Project Update
+
+Thank you for the insight on my project, it gave me a lot to mull over.
+
+Regarding your recommendation that I do a source-to-source transformation, did you mean high level source=>intermediate=>optimized intermediate=>high level optimized source or just low level source=>optimized low level source?
+
+As far as the target language goes I was originally planning on working with C/Cil, I did try installing Pypy and looking at the source/api but haven't gotten it to turn python source into an annotated ast or target code. Due to the duck-typedness, tuples, and ability to pass functions in Python, it would seem reasonable to do the optimization at a level closer to the original source.
+
+"optimized"				"original"
+"""					"""
+def _t1(_x, _m):			def main():
+	_m = _x[0]				x1 = range(10)
+	for i in xrange(len(_x)):		x2 = range(12)
+		_m = max(_m, _x[i])
+	return (_x, _m)				m1 = x1[0]
+						for i in xrange(len(x1)):
+def main():						m1 = max(m1, i)
+	x1 = range(10)
+	x2 = range(12)				m2 = x2[0]
+	(x1, m1) = _t1(x1, m1)			for i in xrange(len(x2)):
+	(x2, m2) = _t1(x2, m2)				m2 = max(m2, i)
+
+	print m1				print m1
+	print m2				print m2
+"""					"""
+
+Assuming that you did mean that I would create in intermediate representation in the middle then my plan was just to use C/Cil and pass pointers to the parameters so that I wouldn't have to worry about changes to state.
+
+My planned algorithm uses a suffix tree created from the intermediate representation of the source code. Once this suffix tree has been constructed by reading the source candidates for replacement can be found by looking at internal nodes of the tree. The replacement can be selected by choosing to replace the path from the root to the node with the most leafs or the deepest internal node. This piece of code can be pulled out into its own procedure to be called by all of the children of the node.
+
+In order to create the abstracted procedure the path from the selected node to the root of the suffix tree will be put at the beginning of the code in a canonical form with all the required parameters and, all instances of it in the original will be replaced with a call to the new procedure.
