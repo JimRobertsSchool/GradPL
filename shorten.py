@@ -4,22 +4,62 @@ import pp
 prefix = "__pp_"
 
 pp_begining = [
-            "pushl   %eax",
-            "movl    8(%esp), %eax",
-            "movl    %eax, " + "%s" % (pp.return_name),
-            "popl    %eax",
-            "addl    $4, %esp"
+        #"pushl   %eax",
+        #"movl    8(%esp), %eax",
+        #"movl    %eax, " + "%s" % (pp.return_name),
+        #"popl    %eax",
+        #"addl    $4, %esp"
         ]
 
 pp_end = [
-        "subl    $4, %esp",
-        "pushl   %eax",
-        "movl    %s" % (pp.return_name) + ", %eax",
-        "movl    %eax, 8(%esp)",
-        "popl    %eax",
-        "ret",
+        #"subl    $4, %esp",
+        #"pushl   %eax",
+        #"movl    %s" % (pp.return_name) + ", %eax",
+        #"movl    %eax, 8(%esp)",
+        #"popl    %eax",
+        "ret"
         ]
 
+avoids = [
+        "jo",
+        "jno",
+        "js",
+        "je",
+        "jz",
+        "jne",
+        "jnz",
+        "jb",
+        "jnae",
+        "jc",
+        "jnb",
+        "jae",
+        "jnc",
+        "jbe",
+        "jna",
+        "ja",
+        "jnbe",
+        "jl",
+        "jnge",
+        "jge",
+        "jnl",
+        "jle",
+        "jng",
+        "jg",
+        "jnle",
+        "jp",
+        "jpe",
+        "jnp",
+        "jpo",
+        "jcxz",
+        "jecxz",
+        "call",
+        "push",
+        "pop",
+        "ret",
+        "esp",
+        "rsp",
+        ":"
+        ]
 
 class SuffixNode:
     def __init__(self, depth = 0):
@@ -29,8 +69,19 @@ class SuffixNode:
         self.depth = depth
         self.locations = list()
 
+    def get_num_children(self):
+        if self.value is None:
+            return 0
+        added_branches = len(self.children.values()) - 1
+        for v in self.children.values():
+            added_branches += v.get_num_children()
+        return added_branches
+
     def get_value(self):
-        return self.depth * len(self.children) if len(self.children) > 1 else 0
+        #if list_in_string(avoids, str(self.value)):
+        #    return 0
+        return self.depth * self.get_num_children()
+        #return self.depth * len(self.children) # if len(self.children) > 1 else 0
 
     def insert(self, remaining_list, index, parent = None):
         if not len(remaining_list) > 0:
@@ -76,7 +127,7 @@ class SuffixNode:
         return to_print
 
     def printer(self, prefix=""):
-        if self.value is None:
+        if self.value is None or list_in_string(avoids, self.value):
             #print prefix + " " + str(self.get_value())
             return
         else:
@@ -114,9 +165,10 @@ class SuffixTree:
                 branch.to_return = code[:]
                 branch.best_val = current.get_value()
             for k, v in current.children.items():
-                branch(v, code + [k])
+                if not list_in_string(avoids, k):
+                    branch(v, code + [k])
         branch.best_val = 0
-        branch.to_return = None
+        branch.to_return = []
         branch(self.root, [])
         return branch.to_return
         
@@ -140,6 +192,8 @@ def shorten(program):
         to_sub = to_sub.parent
     """
     middle_temp = st.tree_max()
+    if len(middle_temp) == 0:
+        return program
     new_fun_name = next_temp(program[my_start:my_end])
     new_fun = [new_fun_name + ":"] + pp_begining + middle_temp + pp_end
 
@@ -158,13 +212,20 @@ def list_equals(first, second):
 def next_temp(section):
     return prefix + str(reduce(lambda a, c: a + 1 if ":" in str(c) else a, section, 0))
 
+def list_in_string(lis, string):
+    for each in lis:
+        if each in string:
+            return True
+    return False
+
 def main():
     lis = list("possessoress")
     #print lis
     #lis.reverse()
     s = SuffixTree(lis)
-    s.root.printer("")
+    #s.root.printer("")
     #print s.root.find(list("bs"))
+    print list_in_string(avoids, 'pushq\t%rbp')
 
 
 if __name__ == "__main__":

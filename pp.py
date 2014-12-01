@@ -2,8 +2,8 @@
 
 return_name = "__jims_var"
 holder = [
-	".local %s" % (return_name),
-	".comm %s,4,4" % (return_name)
+	#".local %s" % (return_name),
+	#".comm %s,4,4" % (return_name)
 	]
 
 signals = [

@@ -3,6 +3,7 @@ from argparse import *
 from subprocess import call
 import pp
 import shorten
+import sys
 
 modes = {"c":0, "s":1, "p":2}
 gcc_args = ["-O0", "-S"]
@@ -36,7 +37,7 @@ def main():
 			exit()
 		file_name[-1] = "s"
 
-	if file_name[-1] == "s":
+	if file_name[-1] == "s" and not (file_name[-2] == "orig" or file_name[-2] == "pp"):
 		#call my preprocessor
 		with open(reconstruct_name(file_name), "r") as fin:
 			lines = fin.read().splitlines()
@@ -46,7 +47,9 @@ def main():
                         file_name = reconstruct_name(file_name).split(".")
 			#write out the processed lines
 			with open(reconstruct_name(file_name), "w") as fout:
-				fout.write("\n".join(str(e) for e in processed))
+                                for c in processed:
+                                    fout.write(c)
+                                    fout.write("\n")
 
 	if file_name[-2] == "orig":
 		orig = reconstruct_name(file_name)
@@ -63,8 +66,20 @@ def main():
 		with open(reconstruct_name(file_name), "r") as fin:
 			program = fin.read().splitlines()
 		new_program = shorten.shorten(program)
-		with open(reconstruct_name(file_name), "w") as fout:
-			fout.write("\n".join(new_program))
+                if len(new_program) >= len(program):
+                    if reduce(lambda a, c: a and c[0] == c[1], zip(new_program, program), True):
+                        print("No changes made", file=sys.stderr)
+                        exit()
+                    print("File not shortened", file=sys.stderr)
+		if not args.print:
+			with open(reconstruct_name(file_name), "w") as fout:
+                                for c in new_program:
+                                    fout.write(c)
+                                    fout.write("\n")
+				#fout.write("\n".join(new_program))
+		else:
+			print("\n".join(new_program))
+                        print()
 		
 
 
