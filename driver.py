@@ -80,6 +80,8 @@ def main():
 		else:
 			print("\n".join(new_program))
                         print()
+                if args.verbose:
+                    print(float(len(new_program))/len(program))
 		
 
 
