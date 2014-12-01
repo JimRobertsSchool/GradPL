@@ -42,21 +42,22 @@ def main():
 			lines = fin.read().splitlines()
 			processed = pp.process(lines)
 			#print("\n".join(str(e) for e in processed))
-			file_name[-1] = "orig"
+			file_name[-1] = "orig.s"
+                        file_name = reconstruct_name(file_name).split(".")
 			#write out the processed lines
 			with open(reconstruct_name(file_name), "w") as fout:
 				fout.write("\n".join(str(e) for e in processed))
 
-	if file_name[-1] == "orig":
+	if file_name[-2] == "orig":
 		orig = reconstruct_name(file_name)
-		file_name[-1] = "pp"
+		file_name[-2] = "pp"
 		new = reconstruct_name(file_name)
 		cp_call = ["cp", orig, new]
 		ret = call(cp_call)
 		if ret != 0:
 			exit()
 
-	if file_name[-1] == "pp":
+	if file_name[-2] == "pp":
 		#run the actual procedural abstraction
 		program = None
 		with open(reconstruct_name(file_name), "r") as fin:
