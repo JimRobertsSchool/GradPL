@@ -4,13 +4,19 @@ import pp
 prefix = "__pp_"
 
 pp_begining = [
-            "movl    4(%esp), " + "%s" % (pp.return_name),
+            "pushl   %eax",
+            "movl    8(%esp), %eax",
+            "movl    %eax, " + "%s" % (pp.return_name),
+            "popl    %eax",
             "addl    $4, %esp"
         ]
 
 pp_end = [
         "subl    $4, %esp",
-        "movl    %s" % (pp.return_name) + ", 4(%esp)",
+        "pushl   %eax",
+        "movl    %s" % (pp.return_name) + ", %eax",
+        "movl    %eax, 8(%esp)",
+        "popl    %eax",
         "ret",
         ]
 
