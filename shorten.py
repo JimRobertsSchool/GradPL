@@ -161,7 +161,7 @@ class SuffixTree:
         def branch(current, code):
             if current.value is None:
                 return
-            if current.get_value() > branch.best_val:
+            if current.get_value() > branch.best_val and len(code) >= 3:
                 branch.to_return = code[:]
                 branch.best_val = current.get_value()
             for k, v in current.children.items():
