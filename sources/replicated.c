@@ -7,11 +7,13 @@ int main() {
 int a(int a, int b) {
 	a++;
 	a += b;
-	return a;
+	b = a;
+	return a+b+2;
 }
 
 int b(int aa, int bb) {
 	aa++;
 	aa += bb;
-	return aa;
+	bb = aa;
+	return aa+bb+2;
 }
