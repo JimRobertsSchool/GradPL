@@ -1,0 +1,177 @@
+%-----------------------------------------------------------------------------
+%
+%               Template for sigplanconf LaTeX Class
+%
+% Name:         sigplanconf-template.tex
+%
+% Purpose:      A template for sigplanconf.cls, which is a LaTeX 2e class
+%               file for SIGPLAN conference proceedings.
+%
+% Guide:        Refer to "Author's Guide to the ACM SIGPLAN Class,"
+%               sigplanconf-guide.pdf
+%
+% Author:       Paul C. Anagnostopoulos
+%               Windfall Software
+%               978 371-2316
+%               paul@windfall.com
+%
+% Created:      15 February 2005
+%
+%-----------------------------------------------------------------------------
+
+
+\documentclass[9pt,nocopyrightspace]{sigplanconf}
+
+% The following \documentclass options may be useful:
+
+% preprint      Remove this option only once the paper is in final form.
+% 10pt          To set in 10-point type instead of 9-point.
+% 11pt          To set in 11-point type instead of 9-point.
+% authoryear    To obtain author/year citation style instead of numeric.
+
+\usepackage{amsmath}
+
+
+\begin{document}
+
+\special{papersize=8.5in,11in}
+\setlength{\pdfpageheight}{\paperheight}
+\setlength{\pdfpagewidth}{\paperwidth}
+
+\conferenceinfo{CONF 'yy}{Month d--d, 20yy, City, ST, Country} 
+\copyrightyear{20yy} 
+\copyrightdata{978-1-nnnn-nnnn-n/yy/mm} 
+\doi{nnnnnnn.nnnnnnn}
+
+% Uncomment one of the following two, if you are not going for the 
+% traditional copyright transfer agreement.
+
+%\exclusivelicense                % ACM gets exclusive license to publish, 
+                                  % you retain copyright
+
+%\permissiontopublish             % ACM gets nonexclusive license to publish
+                                  % (paid open-access papers, 
+                                  % short abstracts)
+
+\titlebanner{banner above paper title}        % These are ignored unless
+\preprintfooter{short description of paper}   % 'preprint' option specified.
+
+\title{Source Code Compression Using Procedural Abstraction}
+\subtitle{}
+
+\authorinfo{James Roberts}
+           {UVA}
+           {jpr4gc@virginia.edu}
+
+\maketitle
+
+\begin{abstract}
+This is the text of the abstract.
+\end{abstract}
+
+%\category{CR-number}{subcategory}{third-level}
+
+% general terms are not compulsory anymore, 
+% you may leave them out
+%\terms
+%remove
+
+\keywords
+procedural abstraction, suffix tree
+
+\section{Introduction}
+
+In an age of relatively cheap memory programmers in most cases are not as burdened by the negative effects of time space tradeoffs and optimizations such as manual memory management and "lightweight" languages can be forgone in favor of methods that save time writing programs.
+
+A small minority will still write in languages like C where they have more control to an extent.
+Fields such as embedded systems may do this, but what if simply writing in C doesn't provide a small enough memory footprint between stack, heap, globals, and code? One option that will be explored in this paper is a shrinkage of the code size generated (in the .s and hopefully .o files) by identifying similar segments of code and pulling them into separate procedures.
+If this segment of code is used in multiple locations and is small enough then by moving it into a separate location with a generated label and replacing each instance of the segment with a call to the label the total size of the code can be reduced.
+
+The remainder of this paper will be devoted to recording the approach, results, and problems associated with the basic approach chosen.
+
+\section{Approach}
+
+This section will be broken down into four parts that map to the four stages that the driver file executes.
+All of the code written for this undertaking was done in Python 2.7.2 but is hopefully fairly future-proof, the creation of assembly source was done on a 32 bit machine for ease of compilation but the preprocessor should be extenable to support 64 bit.
+
+The first section deals with the generation of assembly source code from a C file.
+
+The second section deals with preprocessing a plain assembly source code file for use with the shortening algorithm.
+
+The third section deals with creating an original copy of the code for purposes of comparing size and verifying functionality.
+
+The final section deals with the real meat of the procedural abstraction algorithm finding a suitable segment of code to abstract  and replacing all occurrences of it.
+
+\subsection{Assembly Generation}
+
+A filename with the .c extension will start in this stage.
+GCC is called on the given source filename with the O0 and S flags passed creating an unoptimized assembly source file.
+The driver exits if GCC returns a non-zero value.
+Almost any compiler capable of creating assembly similar to GCC should be useable, GCC was chosen over the likes of clang due to the comment free assembly, which makes comparing instructions without parsing the generated file feasible.
+
+With the .s file generated the driver moves onto the preprocessing stage.
+
+\subsection{Preprocessing}
+
+A filename with the .s extension will start in this stage.
+The purpose of this stage is to prepare the assembly source for the procedural abstraction function by stripping whitespace from every line, removing empty lines, removing the cfa and cfi directives, and adding comment tags for the start and end of the "abstractable" code area as well as the previously "abstracted" code segments.
+
+The majority of this processing is a fairly simple exercise in the use of list filters and mapping.
+The only things worth noting are the strings ".text" and ".ident" which were used to locate the start and end of abstractable and abstracted code areas.
+
+With the preprocessing complete the result is written to a file with a .orig.s extension indicating that it is the original preprocessed source.
+
+The driver then moves on to the copy stage.
+
+\subsection{Original Copy}
+
+A filename with the .orig.s extension will start in this stage.
+This stage simply creates a copy of the file with a .pp.s extension which is the file to be updated by the procedural abstraction function.
+The existence of separate "original" and "current" files makes it easier to compare the size and functionality of the completely abstracted source.
+
+With the .pp.s file created the driver moves on to the procedural abstraction stage.
+
+\subsection{Procedural Abstraction}
+
+\section{Results}
+
+Did it end up working?
+
+\section{Problems}
+
+What crippled this approach?
+
+
+\appendix
+\section{Appendix Title}
+
+This is the text of the appendix, if you need one.
+
+\acks
+
+Acknowledgments, if needed.
+
+% We recommend abbrvnat bibliography style.
+
+\bibliographystyle{abbrvnat}
+
+% The bibliography should be embedded for final submission.
+
+\begin{thebibliography}{}
+\softraggedright
+
+\bibitem[Smith et~al.(2009)Smith, Jones]{smith02}
+Stefan Schaeckeler and Weijia Shang. 2009. Procedural Abstraction with Reverse Prefix Trees. In Proceedings of the 7th annual IEEE/ACM International Symposium on Code Generation and Optimization (CGO '09). IEEE Computer Society, Washington, DC, USA, 243-253. DOI=10.1109/CGO.2009.25 http://dx.doi.org/10.1109/CGO.2009.25
+
+\end{thebibliography}
+
+
+\end{document}
+
+%                       Revision History
+%                       -------- -------
+%  Date         Person  Ver.    Change
+%  ----         ------  ----    ------
+
+%  2013.06.29   TU      0.1--4  comments on permission/copyright notices
+

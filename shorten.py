@@ -80,7 +80,7 @@ class SuffixNode:
     def get_value(self):
         #if list_in_string(avoids, str(self.value)):
         #    return 0
-        return self.depth * self.get_num_children()
+        return (self.depth ** 2) * (self.get_num_children() ** 1)
         #return self.depth * len(self.children) # if len(self.children) > 1 else 0
 
     def insert(self, remaining_list, index, parent = None):
@@ -200,7 +200,7 @@ def shorten(program):
     i = 0
     while i + len(middle_temp) < len(editable):
         if list_equals(middle_temp, editable[i:i+len(middle_temp)]):
-            editable = editable[:i] + ["call %s" % (new_fun_name)] + editable[i+len(middle_temp):]
+            editable = editable[:i] + ["call    %s" % (new_fun_name)] + editable[i+len(middle_temp):]
         i += 1
     if len(editable[-1]) == 0:
         editable = editable[:-1]

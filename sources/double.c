@@ -27,3 +27,5 @@ int main() {
 int h(int i) {
 	i += 2;
 }
+
+int x = 0;
