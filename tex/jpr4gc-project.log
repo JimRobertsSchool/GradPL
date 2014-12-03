@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.14)  2 DEC 2014 19:38
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.14)  3 DEC 2014 01:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -260,62 +260,62 @@ Package pdftex.def Info: node.png used on input line 196.
 File: weightex.png Graphic file (type png)
 
 <use weightex.png>
-Package pdftex.def Info: weightex.png used on input line 235.
+Package pdftex.def Info: weightex.png used on input line 265.
 (pdftex.def)             Requested size: 231.86655pt x 184.28873pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3 <./weightex.png>]
-Underfull \hbox (badness 2426) in paragraph at lines 320--321
+Underfull \hbox (badness 2426) in paragraph at lines 369--370
 []\OT1/ptm/m/n/8 Intel. 2014. In-tel 64 and IA-32 Ar-chi-tec-tures Soft-ware 
  []
 
 
-Underfull \hbox (badness 2512) in paragraph at lines 320--321
+Underfull \hbox (badness 2512) in paragraph at lines 369--370
 \OT1/ptm/m/n/8 De-vel-oper's Man-ual Col-ume 2(2A, 2B, & 2C): In-struc- 
  []
 
 
-Underfull \hbox (badness 3039) in paragraph at lines 320--321
+Underfull \hbox (badness 3039) in paragraph at lines 369--370
 \OT1/ptm/m/n/8 tion set Ref-er-ence, A-Z. In-tel, Santa Clara, CA, USA 
  []
 
 
-Overfull \hbox (18.08101pt too wide) in paragraph at lines 320--321
+Overfull \hbox (18.08101pt too wide) in paragraph at lines 369--370
 \OT1/ptm/m/n/8 http://www.intel.com/content/dam/www/public/us/en/documents/manu
 als/64- 
  []
 
 
-Underfull \hbox (badness 1348) in paragraph at lines 320--321
+Underfull \hbox (badness 1348) in paragraph at lines 369--370
 \OT1/ptm/m/n/8 ia-32-architectures-software-developer-instruction-set-reference
 - 
  []
 
-[4
+[4] [5
 
 ] (./jpr4gc-project.aux) ) 
 Here is how much of TeX's memory you used:
- 2674 strings out of 495028
- 34934 string characters out of 6181497
- 102995 words of memory out of 5000000
- 5855 multiletter control sequences out of 15000+600000
+ 2675 strings out of 495028
+ 34940 string characters out of 6181497
+ 116995 words of memory out of 5000000
+ 5856 multiletter control sequences out of 15000+600000
  18724 words of font info for 40 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 37i,6n,30p,418b,255s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,9n,30p,450b,255s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8
 r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
-w/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a
-.pfb>
-Output written on jpr4gc-project.pdf (4 pages, 138841 bytes).
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
+utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on jpr4gc-project.pdf (5 pages, 150635 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 66 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
