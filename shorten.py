@@ -93,7 +93,7 @@ class SuffixNode:
     def get_value(self):
 	c = self.count_children()
 	d = self.depth
-	#return c*(d-1)-(d+2)
+	return c*(d-1)-(d+2)
         return (d ** 1) * (c ** 1)
 
     def insert(self, remaining_list, index, parent = None):
@@ -175,7 +175,7 @@ class SuffixTree:
             if current.value is None:
                 return
             if current.get_value() > branch.best_val and len(code) >= 2:
-	        print "%d, %d, %d" % (len(code), current.count_children(), current.depth)
+	        #print "%d, %d, %d" % (len(code), current.count_children(), current.depth)
                 branch.to_return = code[:]
                 branch.best_val = current.get_value()
             for k, v in current.children.items():
