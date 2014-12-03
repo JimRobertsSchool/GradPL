@@ -5,12 +5,17 @@ import pp
 import shorten
 import sys
 
-modes = {"c":0, "s":1, "p":2}
+#modes = {"c":0, "s":1, "p":2}
 gcc_args = ["-O0", "-S"]
 gcc_args_o = ["-c"]
 gcc_args_out = ["-o"]
 
 def main():
+    """
+    Add parsing functionality and arguments
+    Helpful arguments such as -e to create executables automatically
+    And -f to run Stage 4 in a loop automatically
+    """
     parser = ArgumentParser()
     parser.add_argument("file", help="the file to work on")
     parser.add_argument("-p", "--print", help="output to stdout instead of file", action="store_true")
@@ -25,6 +30,7 @@ def main():
 
     file_name = args.file.split(".")
 
+    # Stage 1
     if file_name[-1] == "c":
         # run gcc
         gcc_call = ["gcc"]+gcc_args+[reconstruct_name(file_name)]
@@ -34,6 +40,7 @@ def main():
             exit()
         file_name[-1] = "s"
 
+    # Stage 2
     if file_name[-1] == "s" and not (file_name[-2] == "orig" or file_name[-2] == "pp"):
         #call my preprocessor
         with open(reconstruct_name(file_name), "r") as fin:
@@ -51,6 +58,7 @@ def main():
             make_executable(file_name)
 
 
+    # Stage 3
     if file_name[-2] == "orig":
         orig = reconstruct_name(file_name)
         file_name[-2] = "pp"
@@ -60,6 +68,7 @@ def main():
         if ret != 0:
             exit()
 
+    # Stage 4
     if file_name[-2] == "pp":
         cont = True
         while True and cont:
@@ -94,7 +103,6 @@ def make_executable(name):
     copy = name[:]
     copy[-1] = "s"
     gcc_call_1 = ["gcc"] + gcc_args_o + [reconstruct_name(copy)]
-    print(gcc_call_1)
     ret = call(gcc_call_1)
 
     if ret != 0:
@@ -105,7 +113,6 @@ def make_executable(name):
     copy[-1] = "out"
     exe = reconstruct_name(copy)
     gcc_call_2 = ["gcc"] + gcc_args_out + [exe, obj]
-    print(gcc_call_2)
     ret = call(gcc_call_2)
 
     if ret != 0:

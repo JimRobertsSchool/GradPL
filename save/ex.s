@@ -1,0 +1,14 @@
+.text
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+.ident

@@ -232,7 +232,7 @@ The effects of increasing one can be seen in Figure 4.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=.8]{weightex}
+\includegraphics[scale=\textwidth/2]{weightex}
 \caption{The effects of weighting the number of replacements more heavily.}
 \end{center}
 \end{figure}
@@ -281,15 +281,9 @@ At each instruction in this loop the next instructions are compared to the segme
 
 Once this loop has terminated the abstractable code will have had all occurences of the segment removed and replaced with a call to an abstracted procedure.
 
-The driver can then write the new .pp.s file to disk.
-
 \section{Results}
 
-The algorithm successfully shortens code although not necessarily by large amounts.
-
-Some results are below.
-
-
+Did it end up working?
 
 \section{Problems}
 

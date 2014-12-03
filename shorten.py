@@ -1,8 +1,16 @@
 #!/usr/bin/python
 import pp
 
+#The prefix for temporary functions
 prefix = "__pp_"
 
+"""
+The generated function prologue 
+Ended up just being a label
+I tried originally to create a static variable to store
+the return address but it ended up being too many
+lines of extra code to be worth it
+"""
 pp_begining = [
         #"pushl   %eax",
         #"movl    8(%esp), %eax",
@@ -11,6 +19,11 @@ pp_begining = [
         #"addl    $4, %esp"
         ]
 
+"""
+The generated function epilogue
+Ended up just being a ret instruction
+same reminants from above
+"""
 pp_end = [
         #"subl    $4, %esp",
         #"pushl   %eax",
@@ -20,46 +33,46 @@ pp_end = [
         "ret"
         ]
 
-avoids = [
-        "jo",
-        "jno",
-        "js",
-        "je",
-        "jz",
-        "jne",
-        "jnz",
-        "jb",
-        "jnae",
-        "jc",
-        "jnb",
-        "jae",
-        "jnc",
-        "jbe",
-        "jna",
-        "ja",
-        "jnbe",
-        "jl",
-        "jnge",
-        "jge",
-        "jnl",
-        "jle",
-        "jng",
-        "jg",
-        "jnle",
-        "jp",
-        "jpe",
-        "jnp",
-        "jpo",
-        "jcxz",
-        "jecxz",
-        "call",
-        "push",
-        "pop",
-        "ret",
-        "esp",
-        "rsp",
-        ":"
-        ]
+#List of instructions/symbols to avoid in abstracted segments
+avoids = [":",
+          "jo",
+	  "js",
+	  "je",
+	  "jz",
+	  "jb",
+	  "jc",
+	  "ja",
+	  "jl",
+	  "jg",
+	  "jp",
+	  "jno",
+	  "jne",
+	  "jnz",
+	  "jnb",
+	  "jae",
+	  "jnc",
+	  "jbe",
+	  "jna",
+	  "jge",
+	  "jnl",
+	  "jle",
+	  "jng",
+	  "jpe",
+	  "jnp",
+	  "jpo",
+	  "pop",
+	  "ret",
+	  "esp",
+	  "rsp",
+	  "jnae",
+	  "jnbe",
+	  "jnge",
+	  "jnle",
+	  "jcxz",
+	  "call",
+	  "push",
+	  "jecxz"
+	  ]
 
 class SuffixNode:
     def __init__(self, depth = 0):
@@ -69,19 +82,19 @@ class SuffixNode:
         self.depth = depth
         self.locations = list()
 
-    def get_num_children(self):
+    def count_children(self):
         if self.value is None:
             return 0
         added_branches = len(self.children.values()) - 1
         for v in self.children.values():
-            added_branches += v.get_num_children()
+            added_branches += v.count_children()
         return added_branches
 
     def get_value(self):
-        #if list_in_string(avoids, str(self.value)):
-        #    return 0
-        return (self.depth ** 2) * (self.get_num_children() ** 1)
-        #return self.depth * len(self.children) # if len(self.children) > 1 else 0
+	c = self.count_children()
+	d = self.depth
+	#return c*(d-1)-(d+2)
+        return (d ** 1) * (c ** 1)
 
     def insert(self, remaining_list, index, parent = None):
         if not len(remaining_list) > 0:
@@ -161,7 +174,8 @@ class SuffixTree:
         def branch(current, code):
             if current.value is None:
                 return
-            if current.get_value() > branch.best_val and len(code) >= 3:
+            if current.get_value() > branch.best_val and len(code) >= 2:
+	        print "%d, %d, %d" % (len(code), current.count_children(), current.depth)
                 branch.to_return = code[:]
                 branch.best_val = current.get_value()
             for k, v in current.children.items():
@@ -182,7 +196,8 @@ def shorten(program):
     editable = program[start:end]
 
     st = SuffixTree(editable)
-    #st.root.printer("")
+    ##st.root.printer("")
+    # Failed attempt to iterate over a list instead of doing it all recursively again
     """
     to_sub = st.get_max()
     new_fun = []

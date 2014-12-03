@@ -1,0 +1,23 @@
+------------------------
+|      SuffixTree      |
+|----------------------|
+|+SuffixNode root      |
+|----------------------|
+|+SuffixTree(string[]) |
+|+tree_max():string[]  |
+------------------------
+
+------------------------
+|      SuffixNode      |
+|----------------------|
+|+String value         |
+|+Map<String,          |
+|  SuffixNode> children|
+|+int depth            |
+|----------------------|
+|+SuffixNode(int)      |
+|+insert(string[]):void|
+------------------------
+
+
+

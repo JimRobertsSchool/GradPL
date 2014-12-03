@@ -1,0 +1,21 @@
+.text  | .text           | .text
+a      | #eligible start | #eligible start
+a      | call    __pp_0  | call    __pp_0
+a      | call    __pp_0  | call    __pp_0
+a      | call    __pp_0  | #eligible end
+a      | #eligible end   | #added start
+a      | #added start    | __pp_0:
+a      | __pp_0:         | a
+a      | a               | a
+a      | a               | a
+a      | a               | a
+a      | a               | a
+a      | ret             | a
+.ident | #added end      | ret
+       | .ident          | #added end
+       |                 | .ident
+source     x=2, y=1        x=1, y=1
+
+
+
+
