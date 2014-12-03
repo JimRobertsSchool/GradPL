@@ -113,7 +113,7 @@ def make_executable(name):
     copy[-1] = "out"
     exe = reconstruct_name(copy)
     gcc_call_2 = ["gcc"] + gcc_args_out + [exe, obj]
-    ret = call(gcc_call_2)
+    #ret = call(gcc_call_2)
 
     if ret != 0:
         exit()
