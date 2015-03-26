@@ -5,6 +5,11 @@ import pp
 import shorten
 import sys
 
+"""
+James Roberts
+GradPL Project
+"""
+
 #modes = {"c":0, "s":1, "p":2}
 gcc_args = ["-O0", "-S"]
 gcc_args_o = ["-c"]

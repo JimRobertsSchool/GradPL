@@ -1,6 +1,11 @@
 #!/usr/bin/python
 import pp
 
+"""
+James Roberts
+GradPL Project
+"""
+
 #The prefix for temporary functions
 prefix = "__pp_"
 
@@ -74,6 +79,7 @@ avoids = [":",
 	  "jecxz"
 	  ]
 
+# Node class for the suffix tree
 class SuffixNode:
     def __init__(self, depth = 0):
         self.children = dict()
@@ -82,6 +88,7 @@ class SuffixNode:
         self.depth = depth
         self.locations = list()
 
+    # Fund the number of branches this node will have eventually
     def count_children(self):
         if self.value is None:
             return 0
@@ -90,12 +97,14 @@ class SuffixNode:
             added_branches += v.count_children()
         return added_branches
 
+    # value function for a node
     def get_value(self):
 	c = self.count_children()
 	d = self.depth
 	return c*(d-1)-(d+2)
         return (d ** 1) * (c ** 1)
 
+    # recursively insert all remaining code in the tree
     def insert(self, remaining_list, index, parent = None):
         if not len(remaining_list) > 0:
             return
@@ -117,6 +126,7 @@ class SuffixNode:
 
         child.insert(rest, index, parent)
 
+    # Try to mind locations of a child node
     def find(self, remaining_list):
         if not len(remaining_list) > 0:
             return self.locations
@@ -139,6 +149,7 @@ class SuffixNode:
         to_print += "\n".join(str(e) for e in self.children.values())
         return to_print
 
+    # debug function to print out tree nodes
     def printer(self, prefix=""):
         if self.value is None or list_in_string(avoids, self.value):
             #print prefix + " " + str(self.get_value())
@@ -149,7 +160,7 @@ class SuffixNode:
             for k, v in self.children.items():
                 v.printer(prefix+"\n"+str(k)) 
 
-
+# Suffix tree class
 class SuffixTree:
     def __init__(self, source):
         """
@@ -167,9 +178,11 @@ class SuffixTree:
 
         self.root.value = ""
 
+    # Attempts to find the best node 
     def get_max(self):
         return max(self.nodes, key=lambda a: a.get_value())
 
+    # Function that finds and returns the "best" code segment to replace
     def tree_max(self):
         def branch(current, code):
             if current.value is None:
@@ -187,6 +200,7 @@ class SuffixTree:
         return branch.to_return
         
 
+# The function that takes in a source list and outputs a list with one procedure abstracted
 def shorten(program):
     start = program.index(pp.signals[0]) + 1
     end = program.index(pp.signals[1])
@@ -221,12 +235,15 @@ def shorten(program):
         editable = editable[:-1]
     return program[:start] + editable + program[end:my_start] + new_fun + program[my_start:]
 
+# compare two lists
 def list_equals(first, second):
     return reduce(lambda a, c: a and c[0] == c[1], zip(first, second), True)
 
+# generate the next procedure name
 def next_temp(section):
     return prefix + str(reduce(lambda a, c: a + 1 if ":" in str(c) else a, section, 0))
 
+# check a string for many other strings
 def list_in_string(lis, string):
     for each in lis:
         if each in string:
